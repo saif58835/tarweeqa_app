@@ -31,21 +31,19 @@ jobs:
 
       - name: Generate launcher icons
         run: |
+          pip install Pillow
           mkdir -p android/app/src/main/res/mipmap-mdpi
           mkdir -p android/app/src/main/res/mipmap-hdpi
           mkdir -p android/app/src/main/res/mipmap-xhdpi
           mkdir -p android/app/src/main/res/mipmap-xxhdpi
           mkdir -p android/app/src/main/res/mipmap-xxxhdpi
           python3 -c "
-          from PIL import Image, ImageDraw
-          import os
+          from PIL import Image
           sizes = {'mipmap-mdpi':48,'mipmap-hdpi':72,'mipmap-xhdpi':96,'mipmap-xxhdpi':144,'mipmap-xxxhdpi':192}
           for folder, size in sizes.items():
               img = Image.new('RGB', (size, size), (33, 150, 243))
-              draw = ImageDraw.Draw(img)
-              path = f'android/app/src/main/res/{folder}/ic_launcher.png'
-              img.save(path)
-              print(f'Created {path}')
+              img.save(f'android/app/src/main/res/{folder}/ic_launcher.png')
+          print('Icons created successfully')
           "
 
       - name: Build release APK
